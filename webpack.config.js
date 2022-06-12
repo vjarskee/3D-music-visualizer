@@ -10,7 +10,7 @@ module.exports = (env, options) => {
     entry: './src/main.js',
     output: {
       filename: 'app.js',
-      path: path.resolve(__dirname, 'docs')
+      path: path.resolve(__dirname, 'dist')
     },
 
     devtool: options.mode == 'development' ? 'eval' : false,
