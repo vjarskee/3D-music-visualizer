@@ -1,0 +1,47 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  min-height: 100vh;
+
+  #file-loader {
+    position: absolute;
+    z-index: 200;
+    top: 10px;
+    left: 10px;
+
+    width: 100px;
+    height: 20px;
+
+    color: white;
+  }
+
+  #audio-player {
+    position: absolute;
+    z-index: 200;
+    bottom: 50px;
+
+    width: 80%;
+    height: 60px;
+
+    audio {
+      width: 100%;
+    }
+  }
+
+  .a-enter-vr {
+    position: absolute;
+    z-index: 200;
+    top: 42px;
+    right: 7px;
+  }
+}
