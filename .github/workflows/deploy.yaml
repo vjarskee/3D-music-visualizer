@@ -1,0 +1,58 @@
+name: Deployment
+run-name: Deployment
+on:
+  workflow_run:
+    workflows: ['Lint']
+    branches: [main]
+    types:
+      - completed
+
+jobs:
+  Build-and-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Setup node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.15.1
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build source code
+        run: yarn build
+
+      - name: Archive artifact
+        shell: sh
+        run: tar --dereference --hard-dereference --directory dist -cvf "$RUNNER_TEMP/artifact.tar" .
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%d%m%Y-%H%M%S')"
+
+      - name: Upload artifact
+        id: upload-artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-${{ steps.date.outputs.date }}
+          path: ${{ runner.temp }}/artifact.tar
+          retention-days: 1
+          if-no-files-found: error
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: deployment-${{ steps.date.outputs.date }}
