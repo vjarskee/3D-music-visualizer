@@ -1,11 +1,9 @@
 name: Deployment
 run-name: Deployment
 on:
-  workflow_run:
-    workflows: ['Lint']
-    branches: [main]
-    types:
-      - completed
+  push:
+    branches:
+      - main
 
 jobs:
   Build-and-deploy:
